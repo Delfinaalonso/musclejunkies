@@ -646,7 +646,7 @@ tr:last-child td{border-bottom:none}
 // ══════════════════════════════════════════
 const APP_CONFIG = window.__MJ_CONFIG__ || {};
 const SUPABASE_URL = APP_CONFIG.supabaseUrl || 'https://fvdzqzrlgueegjlpycbz.supabase.co';
-const SUPABASE_KEY = APP_CONFIG.supabaseKey || 'REPLACE_WITH_SUPABASE_KEY';
+const SUPABASE_KEY = APP_CONFIG.supabaseKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2ZHpxenJsZ3VlZWdqbHB5Y2J6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzYwMDU0MywiZXhwIjoyMDg5MTc2NTQzfQ.dr0N1JpVmxBWRmEQJaL7nzBW8A19dX601q6-sIkRJZQ';
 const ADMIN_PASSWORD = APP_CONFIG.adminPassword || 'Suplementos.05';
 const BUSINESS_WHATSAPP = APP_CONFIG.businessWhatsapp || '5491123456789';
 
@@ -709,7 +709,7 @@ function normalizeProductFlags(p) {
 // ══════════════════════════════════════════
 async function sb(path, method='GET', body=null) {
   if (!SUPABASE_URL || !SUPABASE_KEY || SUPABASE_KEY === 'REPLACE_WITH_SUPABASE_KEY') {
-    throw new Error('Configuración de Supabase incompleta. Definí window.__MJ_CONFIG__.supabaseUrl y supabaseKey.');
+    throw new Error('Configuración de Supabase incompleta.');
   }
 
   const headers = {
