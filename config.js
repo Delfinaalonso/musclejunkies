@@ -1,14 +1,7 @@
 window.__MJ_CONFIG__ = {
-  // Requerido para storefront y admin.
-  supabaseUrl: 'https://TU-PROYECTO.supabase.co',
-
-  // Storefront (lectura): usar anon key con políticas RLS.
-  supabaseAnonKey: 'TU_SUPABASE_ANON_KEY',
-
-  // Admin (escritura): preferir una key restringida a tablas necesarias.
-  // Evitá exponer service_role en frontend.
-  supabaseKey: 'TU_SUPABASE_ADMIN_KEY',
-
-  adminPassword: 'CAMBIAR_ESTA_PASSWORD',
-  businessWhatsapp: '5491123456789',
+  supabaseUrl: 'https://fvdzqzrlgueegjlpycbz.supabase.co',
+  supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2ZHpxenJsZ3VlZWdqbHB5Y2J6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2MDA1NDMsImV4cCI6MjA4OTE3NjU0M30.M6cMquORW8LXpKSCad1RhgWWCwMMHwTD7un--uawf8U',
+  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2ZHpxenJsZ3VlZWdqbHB5Y2J6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzYwMDU0MywiZXhwIjoyMDg5MTc2NTQzfQ.dr0N1JpVmxBWRmEQJaL7nzBW8A19dX601q6-sIkRJZQ',
+  adminPassword: 'Suplementos.05',
+  businessWhatsapp: '5492302207044',
 };
