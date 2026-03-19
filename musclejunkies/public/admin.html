@@ -646,7 +646,7 @@ tr:last-child td{border-bottom:none}
 // ══════════════════════════════════════════
 const APP_CONFIG = window.__MJ_CONFIG__ || {};
 const SUPABASE_URL = APP_CONFIG.supabaseUrl || 'https://fvdzqzrlgueegjlpycbz.supabase.co';
-const SUPABASE_KEY = APP_CONFIG.supabaseKey || 'REPLACE_WITH_SUPABASE_KEY';
+const SUPABASE_KEY = APP_CONFIG.supabaseKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2ZHpxenJsZ3VlZWdqbHB5Y2J6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzYwMDU0MywiZXhwIjoyMDg5MTc2NTQzfQ.dr0N1JpVmxBWRmEQJaL7nzBW8A19dX601q6-sIkRJZQ';
 const ADMIN_PASSWORD = APP_CONFIG.adminPassword || 'Suplementos.05';
 const BUSINESS_WHATSAPP = APP_CONFIG.businessWhatsapp || '5491123456789';
 
@@ -709,7 +709,7 @@ function normalizeProductFlags(p) {
 // ══════════════════════════════════════════
 async function sb(path, method='GET', body=null) {
   if (!SUPABASE_URL || !SUPABASE_KEY || SUPABASE_KEY === 'REPLACE_WITH_SUPABASE_KEY') {
-    throw new Error('Configuración de Supabase incompleta. Definí window.__MJ_CONFIG__.supabaseUrl y supabaseKey.');
+    throw new Error('Configuración de Supabase incompleta.');
   }
 
   const headers = {
@@ -998,7 +998,7 @@ function openProductModal(id) {
     if (p.faq && Array.isArray(p.faq)) p.faq.forEach(f => addFaq(f.q, f.a));
       const pvariants = allVariants.filter(v => v.product_id === p.id);
     if (pvariants.length > 0) {
-      pvariants.forEach(v => addVariantRow(v.flavor || '', v.stock ?? 0, v.price ?? p.price ?? 0, v.id));
+      pvariants.forEach(v => addVariantRow(v.flavor || '', v.stock ?? 0, v.price ?? p.price ?? 0, v.id, v.image_url || ''));
     } else {
       addVariantRow('', 0, p.price || 0, '');
     }
@@ -1061,7 +1061,7 @@ function addFaq(q='', a='') {
     <div class="form-group"><label class="form-label">Respuesta</label><textarea class="form-textarea faq-a" rows="2" placeholder="Respuesta...">${a}</textarea></div>`;
   list.appendChild(div);
 }
-function addVariantRow(flavor='', stock=0, price=0, id='') {
+function addVariantRow(flavor='', stock=0, price=0, id='', imageUrl='') {
   const list = document.getElementById('prod-variants-list');
   const div = document.createElement('div');
   div.className = 'repeat-item';
@@ -1073,6 +1073,7 @@ function addVariantRow(flavor='', stock=0, price=0, id='') {
       <div class="form-group"><label class="form-label">Stock</label><input type="number" class="form-input var-stock" min="0" placeholder="0" value="${Number(stock) || 0}"></div>
       <div class="form-group"><label class="form-label">Precio (ARS)</label><input type="number" class="form-input var-price" min="0" placeholder="0" value="${Number(price) || 0}"></div>
     </div>`;
+  div.innerHTML += `<div class="form-group" style="margin-top:.65rem"><label class="form-label">Imagen de esta variante (URL)</label><input type="text" class="form-input var-image" placeholder="https://..." value="${imageUrl || ''}"></div>`;
   list.appendChild(div);
 }
 
@@ -1082,16 +1083,18 @@ function collectVariantRows(defaultPrice=0) {
     const flavorRaw = row.querySelector('.var-flavor')?.value?.trim() || '';
     const stock = parseInt(row.querySelector('.var-stock')?.value, 10);
     const price = parseInt(row.querySelector('.var-price')?.value, 10);
+    const image_url = row.querySelector('.var-image')?.value?.trim() || null;
     return {
       id,
       flavor: flavorRaw || null,
       stock: Number.isFinite(stock) && stock >= 0 ? stock : 0,
       price: Number.isFinite(price) && price > 0 ? price : defaultPrice,
+      image_url,
     };
   }).filter(v => v.price >= 0);
 
   if (rows.length === 0) {
-    return [{ id: null, flavor: null, stock: 0, price: defaultPrice }];
+    return [{ id: null, flavor: null, stock: 0, price: defaultPrice, image_url: null }];
   }
   return rows;
 }
@@ -1151,9 +1154,9 @@ async function saveProduct() {
 
       for (const v of variantRows) {
         if (v.id) {
-          await sb(`/variants?id=eq.${v.id}`, 'PATCH', { flavor: v.flavor, stock: v.stock, price: v.price });
+          await sb(`/variants?id=eq.${v.id}`, 'PATCH', { flavor: v.flavor, stock: v.stock, price: v.price, image_url: v.image_url });
         } else {
-          await sb('/variants', 'POST', { product_id: id, flavor: v.flavor, stock: v.stock, price: v.price });
+          await sb('/variants', 'POST', { product_id: id, flavor: v.flavor, stock: v.stock, price: v.price, image_url: v.image_url });
         }
       }
       for (const vid of toDelete) {
@@ -1169,7 +1172,7 @@ async function saveProduct() {
       if (created?.[0]) {
         allProducts.push(normalizeProductFlags(created[0]));
         for (const v of variantRows) {
-          await sb('/variants', 'POST', { product_id: created[0].id, flavor: v.flavor, stock: v.stock, price: v.price || data.price });
+          await sb('/variants', 'POST', { product_id: created[0].id, flavor: v.flavor, stock: v.stock, price: v.price || data.price, image_url: v.image_url });
         }
 
         const newVariants = await sb(`/variants?product_id=eq.${created[0].id}&select=*`);
