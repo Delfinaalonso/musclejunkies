@@ -10,3 +10,6 @@ alter table products
   add column if not exists dosage_amount text,
   add column if not exists dosage_when text,
   add column if not exists dosage_how text;
+
+alter table variants
+  add column if not exists image_url text;
