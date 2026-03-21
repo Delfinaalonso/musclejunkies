@@ -4,4 +4,6 @@ window.__MJ_CONFIG__ = {
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjeGl5Ym5hcG1rZXNhanh1Y29oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzkxNjA2NCwiZXhwIjoyMDg5NDkyMDY0fQ._YWTWMjr4edMaUXXoTuOz5_WcS_DRpL8TurnqZhA7wI',
   adminPassword: 'Suplementos.05',
   businessWhatsapp: '5492302207044',
+  // Opcional: link de cobro para abrir Mercado Pago al confirmar pedido.
+  mercadoPagoCheckoutUrl: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=TU_PREFERENCE_ID',
 };
